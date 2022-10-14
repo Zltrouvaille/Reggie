@@ -13,6 +13,9 @@ spring:
     host: 192.168.41.1
     port: 6379
     database: 0
+  cache:
+    redis:
+      time-to-live: 1800000 #设置缓存的过期时间
 mybatis-plus:
   configuration:
     #address_book-->AddressBook
