@@ -2,9 +2,14 @@ package wang.z.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.web.bind.annotation.*;
 import wang.z.common.CustomException;
 import wang.z.common.R;
@@ -29,6 +34,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/setmeal")
 @Slf4j
+@Api(tags = "套餐相关接口")  // 表示Controller
 public class SetmealController {
     @Autowired
     private SetmealDishService setmealDishService;
@@ -44,6 +50,7 @@ public class SetmealController {
      * @return
      */
     @PostMapping
+    @ApiOperation(value = "新增套餐接口") //方法的名称
     public R<String> save(@RequestBody SetmealDto setmealDto){
         log.info("套餐信息： {}",setmealDto);
         setmealService.saveWithDish(setmealDto);
@@ -51,6 +58,10 @@ public class SetmealController {
     }
 
     @GetMapping("/page")
+    @ApiOperation(value = "套餐分页查询接口") //方法的名称
+    @ApiImplicitParams(
+            {@ApiImplicitParam(name = "page",value = "页码",required = true)})
+    // name 是参数的名称  。。required是表示这个参数是否是必须的
     public R<Page> page(int page, int pageSize, String name)
     {
         //构造分页构造器

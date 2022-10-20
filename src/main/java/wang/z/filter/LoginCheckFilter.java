@@ -39,7 +39,11 @@ public class LoginCheckFilter implements Filter {
                 "/front/**",
                 "/common/**",
                 "/user/sendMsg",
-                "/user/login"
+                "/user/login",
+                "/doc.html/**",
+                "/webjars/**",
+                "/swagger-resources",
+                "/v2/api-docs"
         };
 
         //2. 判断本次是否需要处理
@@ -49,10 +53,10 @@ public class LoginCheckFilter implements Filter {
             filterChain.doFilter(request, response);
             return;
         }
+        log.info("本次访问的是: {}",requestURI);
         //4. 判断登录状态，如果已经登陆，则直接放行
         if(request.getSession().getAttribute("employee") != null){
             log.info("用户一登陆","employee");
-
             Long emId = (Long) request.getSession().getAttribute("employee");
             BaseContest.setCurrentId(emId);
 
